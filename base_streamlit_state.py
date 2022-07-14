@@ -30,13 +30,11 @@ class BaseStreamlitState:
         if not os.path.exists(path):
             os.makedirs(path)
 
-        if not self.state.db["page_content"].exists():
-            self.state.db["page_content"].create(pk="page")
-            
-        for page in self.state.db.query('select distinct page from page_content'):
-            if not os.path.exists(path+'/'+page['page']+'.py'):
-                with open(path+'/'+page['page']+'.py', 'w') as f:
-                    f.write(self.page_template(page['page']))
+        if self.state.db["page_content"].exists():
+            for page in self.state.db.query('select distinct page from page_content'):
+                if not os.path.exists(path+'/'+page['page']+'.py'):
+                    with open(path+'/'+page['page']+'.py', 'w') as f:
+                        f.write(self.page_template(page['page']))
                     
     def page_template(self, page):
         return f"""from components.editable_page import EditablePage\nEditablePage('{page}').render()""".strip()
