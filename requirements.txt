@@ -1,0 +1,4 @@
+pyparsing==3.0.9
+sqlite_utils==3.27
+streamlit==1.10.0
+streamlit_ace==0.1.1
