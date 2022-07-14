@@ -17,8 +17,10 @@ class BaseStreamlitState:
             except NotFoundError:
                 self.init_pages()
         if 'initializer' in self.state:
-            self.state.initializer(self)
-        
+            try:
+                self.state.initializer(self)
+            except:
+                st.warning('error with initialzer')
 
     def parse_initializer(self, initializer):
         return types.FunctionType(marshal.loads(initializer), globals(), 'initializer')
