@@ -25,10 +25,14 @@ class BaseStreamlitState:
 
     def init_pages(self):
         import os
+        
         path = './pages'
         if not os.path.exists(path):
             os.makedirs(path)
-        
+
+        if not self.state.db["page_content"].exists():
+            self.state.db["page_content"].create(pk="page")
+            
         for page in self.state.db.query('select distinct page from page_content'):
             if not os.path.exists(path+'/'+page['page']+'.py'):
                 with open(path+'/'+page['page']+'.py', 'w') as f:
