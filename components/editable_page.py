@@ -9,7 +9,7 @@ class EditablePage(BaseStreamlitState):
         self.page = page
         try:
             self.content = self.state.db['page_content'].get(self.page)['content']
-        except NotFoundError:
+        except:
             self.content = ""
         self.edit = edit
 
