@@ -11,19 +11,23 @@ class BaseStreamlitState:
     def __init__(self):
         self.state = st.session_state
         self.state.db = Database('streamlite.db')
+        self.init_pages()
+
         if 'initializer' not in self.state:
             try:
-                st.session_state.initializer = self.parse_initializer(self.state.db['initializer'].get(1)['boot'])
-            except NotFoundError:
-                self.init_pages()
+                self.parse_initializer(self.state.db['initializer'].get(1)['boot'])
+            except Exception as e:
+                st.write(str(e))
+
         if 'initializer' in self.state:
             try:
-                self.state.initializer(self)
-            except:
-                st.warning('error with initialzer')
+                self.state.initializer.initialize(self)
+            except Exception as e:
+                st.warning(str(e))
 
     def parse_initializer(self, initializer):
-        return types.FunctionType(marshal.loads(initializer), globals(), 'initializer')
+        exec(marshal.loads(initializer), globals())
+        self.state.initializer = Initializer
 
     def init_pages(self):
         import os
