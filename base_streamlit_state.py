@@ -12,6 +12,8 @@ class BaseStreamlitState:
         self.state = st.session_state
         self.state.db = Database('streamlite.db')
         self.init_pages()
+        if 'imports' not in st.session_state:
+            st.session_state['imports'] = {}
 
         if 'initializer' not in self.state:
             try:

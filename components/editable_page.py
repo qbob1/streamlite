@@ -8,11 +8,14 @@ class EditablePage(BaseStreamlitState):
         super().__init__()
         self.page = page
         try:
-            self.content = self.state.db['page_content'].get(self.page)['content']
-        except:
+            self.data = self.state.db['page_content'].get(self.page)
+            self.content = self.data['content']
+        except Exception  as e:
             self.content = ""
-        self.edit = edit
+            st.exception(e)
 
+        self.edit = edit
+        
         if self.content is None:
             self.edit = True
             self.content = ''
