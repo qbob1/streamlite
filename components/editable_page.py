@@ -1,3 +1,4 @@
+import copy
 from streamlit_ace import st_ace
 import streamlit as st
 from base_streamlit_state import BaseStreamlitState
@@ -19,7 +20,10 @@ class EditablePage(BaseStreamlitState):
         if self.content is None:
             self.edit = True
             self.content = ''
-            return
+
+    def _exec(self, content):
+        #override import fn
+        exec(content)
 
     def builder_view(self):
         if self.edit:
@@ -28,7 +32,7 @@ class EditablePage(BaseStreamlitState):
                     self.content if self.content else '', language='python')
                 st.write('Preview:')
                 if self.content is not None:
-                    exec(self.content)
+                    self._exec(self.content)
                 save = st.button('Save')
 
         if save and self.edit:
@@ -44,4 +48,4 @@ class EditablePage(BaseStreamlitState):
             if self.edit:
                 self.builder_view()
                 return
-            exec(self.content)
+            self._exec(self.content)
