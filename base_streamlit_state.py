@@ -21,7 +21,8 @@ class BaseStreamlitState:
         
 
     def parse_initializer(self, initializer):
-        return types.FunctionType(marshal.loads(initializer), globals(), 'initializer')
+        exec(marshal.loads(initializer), globals())
+        self.state.initializer = Initializer
 
     def init_pages(self):
         import os
